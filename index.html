@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu bản thân - Nguyễn Minh Kha</title>
+    <!-- Font chữ Be Vietnam Pro & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(30, 41, 59, 0.75);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent-color: #38bdf8;
+            --item-bg: rgba(255, 255, 255, 0.05);
+            --item-hover: rgba(56, 189, 248, 0.15);
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            --nav-bg: rgba(15, 23, 42, 0.8);
+        }
+
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --accent-color: #0284c7;
+            --item-bg: #f1f5f9;
+            --item-hover: #e2e8f0;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px 30px;
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 1. MÀN HÌNH TẢI (PRELOADER) */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(56, 189, 248, 0.1);
+            border-left-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            color: #38bdf8;
+            font-weight: 600;
+            letter-spacing: 2px;
+            font-size: 14px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+        /* CANVAS HẠT NỀN */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* THANH ĐIỀU HƯỚNG TRANG (NAVIGATION BAR) */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            display: flex;
+            gap: 10px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 8px 12px;
+            border-radius: 30px;
+            border: 1px solid var(--card-border);
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+        }
+
+        /* NÚT ĐỔI GIAO DIỆN SÁNG / TỐI */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--nav-bg);
+            border: 1px solid var(--card-border);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* CẤU TRÚC KHUNG TRANG CHÍNH */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* HỆ THỐNG TRANG (PAGE SECTIONS) */
+        .page {
+            display: none;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            animation: fadeInPage 0.5s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* TIÊU ĐỀ TRANG CON */
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--item-bg);
+            padding-bottom: 10px;
+        }
+
+        .page-title i {
+            color: var(--accent-color);
+        }
+
+        /* --- TRANG 1: GIỚI THIỆU --- */
+        .profile-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .img-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, #38bdf8, #818cf8, #c084fc);
+            background-size: 200% 200%;
+            animation: gradientBorder 4s ease infinite;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--card-bg);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .profile:hover img {
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        .info-container { flex-grow: 1; }
+
+        .name {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .typing-text {
+            font-size: 14px;
+            color: var(--accent-color);
+            font-weight: 600;
+            min-height: 20px;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: var(--item-bg);
+            padding: 10px 14px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent-color);
+            font-size: 13.5px;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .info-item i {
+            color: var(--accent-color);
+            width: 16px;
+            text-align: center;
+        }
+
+        .info-item:hover {
+            background: var(--item-hover);
+            transform: translateX(6px);
+            color: var(--text-main);
+        }
+
+        .info-item strong { color: var(--text-main); }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .social-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--item-bg);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-5px);
+            color: #fff;
+        }
+
+        .social-btn.facebook:hover { background: #1877f2; border-color: #1877f2; box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4); }
+        .social-btn.email:hover { background: #ea4335; border-color: #ea4335; box-shadow: 0 8px 20px rgba(234, 67, 53, 0.4); }
+
+        /* --- TRANG 2: TRÌNH ĐỘ HỌC VẤN (TIMELINE) --- */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 5px;
+            width: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+            opacity: 0.4;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 15px;
+        }
+
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        .timeline-dot {
+            position: absolute;
+            left: -26px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 3px solid var(--card-bg);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge-verified {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: none;
+        }
+
+        .timeline-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .timeline-desc {
+            font-size: 13.5px;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        /* Bằng chứng học vấn */
+        .proof-box {
+            margin-top: 12px;
+            background: var(--item-bg);
+            border: 1px dashed var(--accent-color);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .proof-box:hover {
+            background: var(--item-hover);
+            transform: translateY(-2px);
+        }
+
+        .proof-thumb {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--card-border);
+        }
+
+        .proof-info {
+            flex-grow: 1;
+        }
+
+        .proof-info span {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .proof-info small {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .proof-icon {
+            color: var(--accent-color);
+            font-size: 14px;
+        }
+
+        /* Lightbox Modal xem ảnh bằng chứng */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 2px solid var(--card-border);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox.active .lightbox-img {
+            transform: scale(1);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-lightbox:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- TRANG 3: KỸ NĂNG (SKILLS) --- */
+        .skill-group {
+            margin-bottom: 22px;
+        }
+
+        .skill-group-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-item {
+            margin-bottom: 12px;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 5px;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: var(--item-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* NÚT ĐIỀU HƯỚNG TRANG Ở CUỐI PAGE */
+        .page-navigation-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--item-bg);
+        }
+
+        .action-btn {
+            background: var(--item-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* RESPONSIVE DI ĐỘNG */
+        @media (max-width: 580px) {
+            body { padding-top: 90px; }
+            .profile-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .info-item { text-align: left; }
+            .social-links { justify-content: center; }
+            .navbar {
+                width: 90%;
+                justify-content: center;
+            }
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+
+        /* TOAST THÔNG BÁO COPY EMAIL */
+        .toast {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.9);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: bottom 0.4s ease;
+            z-index: 1000;
+        }
+
+        .toast.show { bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. MÀN HÌNH TẢI BAN ĐẦU -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">ĐANG TẢI...</div>
+    </div>
+
+    <!-- 2. NÚT ĐỔI GIAO DIỆN SÁNG/TỐI -->
+    <button class="theme-toggle" id="themeToggle" title="Đổi giao diện">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- 3. THANH ĐIỀU HƯỚNG CHUYỂN TRANG -->
+    <nav class="navbar">
+        <button class="nav-btn active" onclick="switchPage('about')">
+            <i class="fas fa-user"></i> Giới thiệu
+        </button>
+        <button class="nav-btn" onclick="switchPage('education')">
+            <i class="fas fa-graduation-cap"></i> Học vấn
+        </button>
+        <button class="nav-btn" onclick="switchPage('skills')">
+            <i class="fas fa-code"></i> Điểm mạnh
+        </button>
+    </nav>
+
+    <!-- 4. CANVAS HẠT PHÁT SÁNG NỀN -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- 5. KHUNG CÁ NHÂN CHÍNH (SPA) -->
+    <div class="container">
+        
+        <!-- TRANG 1: GIỚI THIỆU BẢN THÂN -->
+        <div class="page profile active" id="page-about">
+            <div class="profile-content">
+                <div class="img-container">
+                    <img src="https://i.ibb.co/GfjYtKr5/7a8d30314f32cf6c9623.jpg" alt="Nguyễn Minh Kha">
+                </div>
+                
+                <div class="info-container">
+                    <h1 class="name">Nguyễn Minh Kha</h1>
+                    <div class="typing-text" id="typing"></div>
+
+                    <div class="info-list">
+                        <div class="info-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span><strong>Ngày sinh:</strong> 18/02/2007</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-university"></i>
+                            <span><strong>Trình độ:</strong> Sinh viên Đại học Cần Thơ</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span><strong>Chuyên ngành:</strong> An toàn thông tin</span>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/19XA8zdNyV/" target="_blank" class="social-btn facebook" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="mailto:khanguyenhhh@gmail.com"  target="_blank"    class="social-btn email" title="Gửi Email trực tiếp">
+                             <i class="fas fa-envelope"></i>
+</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-navigation-footer">
+                <div></div>
+                <button class="action-btn" onclick="switchPage('education')">
+                    Xem Học Vấn <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TRANG 2: TRÌNH ĐỘ HỌC VẤN -->
+        <div class="page" id="page-education">
+            <div class="page-title">
+                <i class="fas fa-graduation-cap"></i> Trình Độ Học Vấn
+            </div>
+
+            <div class="timeline">
+                <!-- Mốc 1: Đại học Cần Thơ -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Tốt nghiệp THPT</div>
+                    <div class="timeline-title">Học Sinh THPT</div>
+                    <div class="timeline-desc">Hoàn thành chương trình THPT (12/12).</div>
+                </div>
+
+
+                <!-- Mốc 2: THPT -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">
+                        Khóa 51 (2025 - Hiện tại)
+                        <span class="badge-verified"><i class="fas fa-check-circle"></i> Trúng tuyển chính thức</span>
+                    </div>
+                    <div class="timeline-title">Đại học Cần Thơ - Ngành An toàn thông tin</div>
+                    <div class="timeline-desc">Trúng tuyển chính thức hệ Đại học Chính quy theo phương thức Xét kết quả học tập THPT (Học bạ). Mã ngành: 7480202.</div>
+                    
+                    <!-- Khung ảnh bằng chứng -->
+                    <div class="proof-box" onclick="openLightbox('https://i.ibb.co/Mk9wPb9f/b81c4c41-9b3c-4708-9dd6-566adc614824.jpg')">
+                        <img src="https://i.ibb.co/Mk9wPb9f/b81c4c41-9b3c-4708-9dd6-566adc614824.jpg" alt="Thông báo trúng tuyển" class="proof-thumb">
+                        <div class="proof-info">
+                            <span>Giấy thông báo trúng tuyển chính thức</span>
+                            <small>Đại học Cần Thơ - Ngành An toàn thông tin</small>
+                        </div>
+                        <i class="fas fa-search-plus proof-icon"></i>
+                    </div>
+                </div>
+                <!-- Mốc 3: Tự học -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Định hướng</div>
+                    <div class="timeline-title">Thạc Sĩ  Ngành An Ninh Mạng </div>
+                   
+                </div>
+            </div>
+
+            <div class="page-navigation-footer">
+                <button class="action-btn" onclick="switchPage('about')">
+                    <i class="fas fa-arrow-left"></i> Giới thiệu
+                </button>
+                <button class="action-btn" onclick="switchPage('skills')">
+                    Xem  Điểm Mạnh <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TRANG 3: KỸ NĂNG -->
+        <div class="page" id="page-skills">
+            <div class="page-title">
+                <i class="fas fa-star"></i> Điểm Mạnh
+            </div>
+
+            <!-- Nhóm 1 -->
+             
+
+            <!-- Nhóm 2 -->
+            <div class="skill-group">
+                <div class="skill-group-title">
+                    <i class="fas fa-square-root-variable"></i> Yêu Toán & lập trình
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info">
+                        <span>Thích Toán</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-progress="90%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-info">
+                        <span>Thích Lập Trình</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-progress="85%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-navigation-footer">
+                <button class="action-btn" onclick="switchPage('education')">
+                    <i class="fas fa-arrow-left"></i> Học vấn
+                </button>
+                <button class="action-btn" onclick="switchPage('about')">
+                    Quay lại Giới thiệu <i class="fas fa-home"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL XEM ẢNH BẰNG CHỨNG (LIGHTBOX) -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <img src="" id="lightboxImg" class="lightbox-img" alt="Bằng chứng trúng tuyển" onclick="event.stopPropagation()">
+    </div>
+
+   
+
+    <!-- JAVASCRIPT XỬ LÝ -->
+    <script>
+        // 1. MÀN HÌNH LOAD (PRELOADER)
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+            }, 600);
+        });
+
+        // 2. CHUYỂN TRANG MƯỢT MÀ (SPA)
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            const selectedPage = document.getElementById(`page-${pageId}`);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
+                btn.getAttribute('onclick').includes(pageId)
+            );
+            if (activeBtn) activeBtn.classList.add('active');
+
+            if (pageId === 'skills') {
+                setTimeout(() => {
+                    document.querySelectorAll('#page-skills .skill-progress').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-progress');
+                    });
+                }, 100);
+            }
+        }
+
+        // 3. HIỆU ỨNG GÕ CHỮ (TYPING EFFECT)
+        const textArray = ["Sinh viên Đại học Cần Thơ", "Chuyên ngành An toàn thông tin", "Yêu thích Toán Học", "Đam mê Lập Trình"];
+        let textIndex = 0;
+        let charIndex = 0;
+        const typingElement = document.getElementById('typing');
+
+        function type() {
+            if (charIndex < textArray[textIndex].length) {
+                typingElement.textContent += textArray[textIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 100);
+            } else {
+                setTimeout(erase, 2000);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typingElement.textContent = textArray[textIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 50);
+            } else {
+                textIndex = (textIndex + 1) % textArray.length;
+                setTimeout(type, 500);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(type, 800);
+        });
+
+        // 4. XEM ẢNH BẰNG CHỨNG (LIGHTBOX)
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // 5. ĐỔI GIAO DIỆN (DARK / LIGHT MODE)
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+            }
+        });
+
+        // 6. SAO CHÉP EMAIL NHANH
+        const copyEmailBtn = document.getElementById('copyEmailBtn');
+        const toast = document.getElementById('toast');
+        const emailText = "example@gmail.com";
+
+        copyEmailBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(emailText).then(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            });
+        });
+
+        // 7. CANVAS TẠO HẠT NỀN TRÔI
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000);
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+    </script>
+</body>
+</html>
